@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "jua";
+  src: url("src/assets/Jua-Regular.ttf");
+}
+
+#siteName,
+#picker {
+  font-family: "jua";
+}
