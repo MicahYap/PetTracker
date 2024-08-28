@@ -12,7 +12,7 @@ function CreateProfile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-pink-200 to-pink-300 p-6">
-      <h2 className="text-3xl font-bold text-center text-slate-100 mb-6">Create Profile</h2>
+      <h2 className="text-3xl font-bold text-center text-slate-100 mb-6">Create Pet Profile</h2>
       
       <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
         <form>
