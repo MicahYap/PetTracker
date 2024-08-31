@@ -49,7 +49,7 @@ function HDisplay() {
           onClick={() => navigate('/create_profile')}
         >
           +
-        </button>
+      </button>
         {/* Example content for the 1st column, 2nd row */}
       </div>
       <div className="flex items-center justify-center col-span-1 row-span-1">

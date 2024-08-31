@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import CreateProfile from './CreateProfile';
 import HDisplay from './HDisplay';
+import { useNavigate } from 'react-router-dom';
 
 function HomeScreen() {
   const [flag, setFlag] = useState(false);
+  const navigate =useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-pink-200 to-pink-300">
@@ -23,7 +25,8 @@ function HomeScreen() {
           <button className="py-2 px-5 text-1xl text-slate-100 bg-pink-500 hover:bg-pink-400 rounded-full">
             <FontAwesomeIcon icon={faBell} />
           </button>
-          <button className="py-2 px-5 my-10 text-xl text-slate-100 bg-pink-500 hover:bg-pink-400 rounded-full">
+          <button className="py-2 px-5 my-10 text-xl text-slate-100 bg-pink-500 hover:bg-pink-400 rounded-full"
+          onClick = {()=> navigate('/login')}>
             Logout 
           </button>
         </section>
