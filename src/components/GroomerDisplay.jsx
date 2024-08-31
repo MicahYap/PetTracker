@@ -6,52 +6,33 @@ function GroomerDisplay() {
   const [groomer, setGroomer] = useState('');
   const [notes, setNotes] = useState('');
   const [result, setResult] = useState('');
-  // const [nextVisit, setNextVisit] = useState('');
 
   const [dateHistory, setDateHistory] =useState([]);
   const [groomerHistory, setgroomerHistory] =useState([]);
   const [notesHistory, setNotesHistory] =useState([]);
   const [nextVisitHistory, setVisitHistory]= useState([]);
-
-  // function nextVisit() {
-  //   // Get the latest date from the dateHistory array
-  //   let lastDate = dateHistory[dateHistory.length - 1];
-  
-  //   // If there's no date yet, return early or set a default date
-  //   if (!lastDate) {
-  //     console.log("No previous date found.");
-  //     return;
-  //   }
-  
-  //   // Convert the last saved date string to a Date object
-  //   let selectedDate = new Date(lastDate);
-  
-  //   // Add the reminder days to the selected date
-  //   selectedDate.setDate(selectedDate.getDate() + parseInt(reminder));
-  
-  //   // Format the new date
-  //   const formattedDate = selectedDate.toLocaleDateString('en-US', {
-  //     month: '2-digit',
-  //     day: '2-digit',
-  //     year: '2-digit',
-  //   });
-  
-  //   // Update the result state with the formatted date
-  //   setResult(formattedDate);
-  // }
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: '2-digit',
+    });
+  };
   
 
-  function saveAction(e){
+  
+
+  function saveAction(e) {
     e.preventDefault();
-
-    // Get the latest date from the dateHistory array
-    let lastDate = dateHistory[dateHistory.length - 1];
   
-    // If there's no date yet, return early or set a default date
-    if (!lastDate) {
-      console.log("No previous date found.");
+    // Validation check
+    if (!date || !groomer) {
+      alert('Please fill in both Date and Groomer fields.');
       return;
     }
+  
+    // Get the latest date from the dateHistory array
+    let lastDate = dateHistory[dateHistory.length - 1] || date;
   
     // Convert the last saved date string to a Date object
     let selectedDate = new Date(lastDate);
@@ -60,25 +41,22 @@ function GroomerDisplay() {
     selectedDate.setDate(selectedDate.getDate() + parseInt(reminder));
   
     // Format the new date
-    const formattedDate = selectedDate.toLocaleDateString('en-US', {
-      month: '2-digit',
-      day: '2-digit',
-      year: '2-digit',
-    });
+    const formattedDate = formatDate(selectedDate);
   
-    // Update the result state with the formatted date
-    setResult(formattedDate);
-
-
-    setDateHistory([...dateHistory,date]);
+    // Save the data
+    setDateHistory([...dateHistory, formatDate(date)]);
     setgroomerHistory([...groomerHistory, groomer]);
     setNotesHistory([...notesHistory, notes]);
-    setVisitHistory([...nextVisitHistory, result]);
-
+    setVisitHistory([...nextVisitHistory, formattedDate]);
+  
+    // Clear the input fields
     setDate('');
     setGroomer('');
     setNotes('');
-  };
+    setReminder('');
+  }
+  
+  
 
   return (
     <div className="">
@@ -125,21 +103,6 @@ function GroomerDisplay() {
           />
           </form>
         </div>
-
-        {/* NEXT VISIT
-        <div>
-          <p className="block text-white text-slate-900 text-sm font-bold mb-2">Next Visit</p>
-          <form className="mb-4 w-36">
-          <input
-            id="date"
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full p-2 border rounded-lg text-slate-900"
-          />
-          </form>
-        </div> */}
-
        
           <button
             className="mb-4 px-4 text-white bg-pink-600 h-10 text-slate-900 content-center rounded-lg hover:bg-pink-700"
@@ -166,13 +129,6 @@ function GroomerDisplay() {
               <span className="block text-slate-900 text-sm font-bold mb-2 text-white">days</span>
             </div>
           </form>
-
-          {/* <button
-            onClick={saveAction}
-            className="mb-4 px-4 text-white bg-pink-600 h-6 text-slate-900 content-center rounded-lg hover:bg-pink-700"
-          >
-            Enter
-          </button> */}
         </div>
       </div>
 
@@ -180,11 +136,11 @@ function GroomerDisplay() {
 
 
       <p className="text-xl text-white font-semibold text-slate-900 mb-4">History</p>
-      {dateHistory.map((_, index) => (
+      {dateHistory.map((date, index) => (
         <div key={index} className='flex'>
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>
             <p className=''>Date</p>
-            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{dateHistory[index]}</p>
+            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{formatDate(date)}</p>
           </div>
 
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-40'>
@@ -201,10 +157,9 @@ function GroomerDisplay() {
             <p className=''>Next Visit</p>
             <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{nextVisitHistory[index]}</p>
           </div>
-
-
         </div>
       ))}
+
     </div>
   );
 }
