@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import GroomerDisplay from './GroomerDisplay';
-import VetDisplay from './VetDisplay';
 
 function Profile() {
   const [flagGroom, setFlagGroom] = useState(true);
@@ -42,7 +41,6 @@ function Profile() {
 
           <div className='bg-pink-400 w-full h-96 p-6 overflow-y-auto'>
             {flagGroom && (<GroomerDisplay />)}
-            {flagVet && (<VetDisplay />)}
           </div>
         </div>
 
