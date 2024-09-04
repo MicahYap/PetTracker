@@ -8,12 +8,39 @@ function LogIn() {
   const [password, setPassword] = useState('');
   const navigate =useNavigate();
 
+  const handleLogIn = async(e) =>{
+    e.preventDefault();
+
+    try{
+      const response = await axios.post('http://localhost:3001/login',{
+        user: {
+          email: email,
+          password: password,
+        },
+      })
+      console.log('Login successful', data);
+      localStorage.setItem('token', data.jwt);
+    }catch (error) {
+      if (error.response) {
+        console.error("Login error", error.response.data.errors)
+
+      } else if (error.request){
+          console.error('No response received:', error.request);
+      }else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error setting up request:', error.message);
+      }
+    }
+
+  } 
+
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-pink-200 to-pink-300">
       <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-pink-500 mb-4">Login</h2>
         
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleLogIn}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
             <input 
