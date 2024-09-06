@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../styles/HomeScreen.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +22,25 @@ function HomeScreen() {
       }
     };
 
+    const logout = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.delete('http://localhost:3001/logout', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        localStorage.removeItem('token');
+        if (logout){
+          navigate('/login')
+          alert(`Logout successful`);
+        }
+        
+      } catch (error) {
+        console.error('Logout failed', error);
+        alert('Logout failed. Check console for details.');
+      }
+    };
+    
+
   
 
   return (
@@ -38,8 +58,10 @@ function HomeScreen() {
           <button className="py-2 px-5 text-1xl text-slate-100 bg-pink-500 hover:bg-pink-400 rounded-full">
             <FontAwesomeIcon icon={faBell} />
           </button>
+          
+          {/* LOGOUT BUTTON */}
           <button className="py-2 px-5 my-10 text-xl text-slate-100 bg-pink-500 hover:bg-pink-400 rounded-full"
-          onClick = {()=> navigate('/login')}>
+          onClick = {logout}>
             Logout 
           </button>
         </section>
