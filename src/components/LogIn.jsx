@@ -10,28 +10,35 @@ function LogIn() {
 
   const handleLogIn = async(e) =>{
     e.preventDefault();
-
+    let response =  ""
     try{
-      const response = await axios.post('http://localhost:3001/login',{
+      response = await axios.post('http://localhost:3001/login',{
         user: {
           email: email,
           password: password,
         },
       })
-      console.log('Login successful', data);
-      localStorage.setItem('token', data.jwt);
+
     }catch (error) {
       if (error.response) {
-        console.error("Login error", error.response.data.errors)
+        alert("Login error" + JSON.stringify(error))
 
       } else if (error.request){
-          console.error('No response received:', error.request);
+          alert('No response received:', error.request);
       }else {
         // Something happened in setting up the request that triggered an Error
-        console.error('Error setting up request:', error.message);
+        alert('Error setting up request:', error.message);
       }
     }
+    localStorage.setItem('token', response.data.status.token);
 
+    const userResponse = await axios.get('http://localhost:3001/current_user', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}`},
+    });
+
+    const user = userResponse.data;
+    const homepagePath = user.homepage_path || `/homepage/${user.id}`;
+    navigate(homepagePath);
   } 
 
 
@@ -75,7 +82,6 @@ function LogIn() {
           <button
             type="submit"
             className="w-full py-2 px-4 bg-pink-500 text-white font-semibold rounded-lg shadow-md hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-            onClick={()=> navigate('/homepage')}
           >
             Login
           </button>
