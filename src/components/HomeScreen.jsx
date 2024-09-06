@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/HomeScreen.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,19 @@ import { useNavigate } from 'react-router-dom';
 function HomeScreen() {
   const [flag, setFlag] = useState(false);
   const navigate =useNavigate();
+
+  
+    const fetchUserData = async () => {
+      try {
+        const userResponse = await axios.get('http://localhost:3001/current_user', {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}`},
+        });
+      } catch (error) {
+        console.error('Error fetching user data', error);
+      }
+    };
+
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-pink-200 to-pink-300">
