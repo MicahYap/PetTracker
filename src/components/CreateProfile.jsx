@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function CreateProfile() {
   const [petName, setPetName] = useState('');
@@ -9,13 +10,49 @@ function CreateProfile() {
   const [type, setType] = useState('');
   const [breed, setBreed] = useState('');
   const navigate =useNavigate();
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token');
 
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const petData = {
+      name: petName,
+      pet_type: type,
+      breed: breed,
+      birthday: birthday,
+      gotcha_day: gotcha,
+      gender: gender,
+      user_id: userId
+    };
+  
+    try {
+      const response = await axios.post('http://localhost:3001/pets', petData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert('Pet profile created!');
+      navigate('/homepage/:userId');
+    } catch (error) {
+      if (error.response) {
+        // Log the entire error response to understand the issue
+        console.error('Error response:', error.response);
+        alert('Pet profile creation unsuccessful: ' + JSON.stringify(error.response.data));
+      } else if (error.request) {
+        alert('No response received: ' + error.request);
+      } else {
+        alert('Error setting up request: ' + error.message);
+      }
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-t from-pink-200 to-pink-300 p-6">
       <h2 className="text-3xl font-bold text-center text-slate-100 mb-6">Create Pet Profile</h2>
       
       <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-lg font-medium text-gray-700 mb-2">Pet Name:</label>
             <input 
@@ -95,8 +132,7 @@ function CreateProfile() {
             </div>
           </div>
 
-          <button type='submit' className="w-full py-2 px-4 bg-pink-500 text-white font-bold rounded-full hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-          onClick={()=>navigate('/homepage')}>
+          <button type='submit' className="w-full py-2 px-4 bg-pink-500 text-white font-bold rounded-full hover:bg-pink-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
             Create
           </button>
         </form>
