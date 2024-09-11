@@ -80,6 +80,7 @@ function VaxCardDisplay({ pet }) {
       });
 
       setUploadedCardImgUrl(response.data.vax_card_url);
+      setFlag(false)
       alert('File uploaded successfully!');
     } catch (error) {
       alert('Error uploading file: ' + error.message);
@@ -95,9 +96,11 @@ function VaxCardDisplay({ pet }) {
       });
 
       setViewVaxCard(response.data.vax_card_url);
+      setFlag(true);
     } catch (error) {
       alert('Error fetching file: ' + error.message);
     }
+    
   };
 
   return (
@@ -181,11 +184,22 @@ function VaxCardDisplay({ pet }) {
         Upload Vax Card
       </button>
             
-      <button onClick={handleViewVaxCard} className="mt-2 bg-blue-500 text-white p-2 rounded-lg">
+      {!flag &&
+        <button onClick={handleViewVaxCard} className="mt-2 bg-blue-500 text-white p-2 rounded-lg">
         See Vax Card
       </button>
 
-      {viewVaxCard && (
+      
+      }
+
+      {flag &&
+        <button onClick={()=> setFlag(false)} className="mt-2 bg-red-500 text-white p-2 rounded-lg">
+        Hide Vax Card
+      </button>
+      }
+
+
+      {flag && (
         <div className="mt-4">
           <img src={viewVaxCard} alt="Vaccine Card" className="w-52 h-auto"/>
         </div>
