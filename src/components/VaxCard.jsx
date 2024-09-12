@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-function VaxCardDisplay({ pet }) {
+function VaxCardDisplay({ pet, setFlagVax }) {
   const [reminder, setReminder] = useState('');
   const [date, setDate] = useState('');
   const [vet, setVet] = useState('');
@@ -16,23 +16,22 @@ function VaxCardDisplay({ pet }) {
   const [vetHistory, setVetHistory] = useState([]);
   const [vaccineHistory, setVaccineHistory] = useState([]);
   const [visitHistory, setVisitHistory] = useState([]);
-
   const [flag, setFlag] = useState(false);
-  
+  const [refresh, setRefresh] = useState(false);
+
   const token = localStorage.getItem('token');
   const { id } = useParams();
 
-  
-
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', {
+    const newDate = new Date(date);
+    return isNaN(newDate.getTime()) ? 'Invalid date' : newDate.toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: '2-digit',
     });
   };
 
-  const saveAction = (e) => {
+  const saveAction = useCallback(async (e) => {
     e.preventDefault();
 
     if (!date || !vet || !vaccine) {
@@ -40,32 +39,70 @@ function VaxCardDisplay({ pet }) {
       return;
     }
 
-    let lastDate = dateHistory[dateHistory.length - 1] || date;
-    let selectedDate = new Date(lastDate);
-    selectedDate.setDate(selectedDate.getDate() + parseInt(reminder, 10));
+    let selectedDate = new Date(date);
+    if (isNaN(selectedDate.getTime())) {
+      console.error("Invalid Date:", date);
+      return;
+    }
 
-    const formattedDate = formatDate(selectedDate);
+    const reminderDays = parseInt(reminder, 10);
+    if (isNaN(reminderDays)) {
+      console.error("Invalid reminder value");
+      return;
+    }
 
-    setDateHistory([...dateHistory, formatDate(date)]);
-    setReminderHistory([...reminderHistory, reminder]);
-    setVetHistory([...vetHistory, vet]);
-    setVaccineHistory([...vaccineHistory, vaccine]);
-    setVisitHistory([...visitHistory, formattedDate]);
+    selectedDate.setDate(selectedDate.getDate() + reminderDays);
 
-    setDate('');
-    setReminder('');
-    setVet('');
-    setVaccine('');
-    setNextVisit('');
-  };
+    const vaxData = {
+      calendar: date,
+      vet: vet,
+      vaccine: vaccine,
+      next_visit: selectedDate,
+    };
 
-  const handleImageChange = (e) => {
+    try {
+      await axios.post(`http://localhost:3001/pets/${pet.id}/vaxs`, vaxData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      alert('Entry saved!');
+      setDate('');
+      setReminder('');
+      setVet('');
+      setVaccine('');
+      setNextVisit('');
+      setFlagVax(true);
+      setRefresh(prev => !prev);
+    } catch (error) {
+      alert("Error saving entry: " + error.message);
+    }
+  }, [date, vet, vaccine, reminder, pet.id, token, setFlagVax]);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/pets/${pet.id}/vaxs`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setDateHistory(response.data.map((vax) => vax.calendar));
+        setVetHistory(response.data.map((vax) => vax.vet));
+        setVaccineHistory(response.data.map((vax) => vax.vaccine));
+        setVisitHistory(response.data.map((vax) => vax.next_visit));
+      } catch (error) {
+        alert('Error fetching history: ' + error.message);
+      }
+    };
+  
+    fetchHistory();
+  }, [refresh, pet.id, token]);
+
+  const handleImageChange = useCallback((e) => {
     if (e.target.files.length > 0) {
       setCardImg(e.target.files[0]);
     }
-  };
+  }, []);
 
-  const uploadImg = async (e) => {
+  const uploadImg = useCallback(async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('vax_card', cardImg);
@@ -80,19 +117,17 @@ function VaxCardDisplay({ pet }) {
       });
 
       setUploadedCardImgUrl(response.data.vax_card_url);
-      setFlag(false)
+      setFlag(false);
       alert('File uploaded successfully!');
     } catch (error) {
       alert('Error uploading file: ' + error.message);
     }
-  };
+  }, [cardImg, pet.id, token]);
 
-  const handleViewVaxCard = async () => {
+  const handleViewVaxCard = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:3001/pets/${pet.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setViewVaxCard(response.data.vax_card_url);
@@ -100,8 +135,7 @@ function VaxCardDisplay({ pet }) {
     } catch (error) {
       alert('Error fetching file: ' + error.message);
     }
-    
-  };
+  }, [pet.id, token]);
 
   return (
     <div>
@@ -184,22 +218,19 @@ function VaxCardDisplay({ pet }) {
         Upload Vax Card
       </button>
             
-      {!flag &&
+      {!flag && (
         <button onClick={handleViewVaxCard} className="mt-2 bg-blue-500 text-white p-2 rounded-lg">
-        See Vax Card
-      </button>
-
-      
-      }
-
-      {flag &&
-        <button onClick={()=> setFlag(false)} className="mt-2 bg-red-500 text-white p-2 rounded-lg">
-        Hide Vax Card
-      </button>
-      }
-
+          See Vax Card
+        </button>
+      )}
 
       {flag && (
+        <button onClick={() => setFlag(false)} className="mt-2 bg-red-500 text-white p-2 rounded-lg">
+          Hide Vax Card
+        </button>
+      )}
+
+      {flag && viewVaxCard && (
         <div className="mt-4">
           <img src={viewVaxCard} alt="Vaccine Card" className="w-52 h-auto"/>
         </div>
@@ -209,23 +240,23 @@ function VaxCardDisplay({ pet }) {
       {dateHistory.map((date, index) => (
         <div key={index} className='flex'>
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>
-            <p className=''>Date</p>
+            <p>Date</p>
             <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{formatDate(date)}</p>
           </div>
 
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-40'>
-            <p className=''>Vet</p>
+            <p>Vet</p>
             <p className='mb-4 w-40 block text-white text-slate-900 text-sm font-bold mb-2'>{vetHistory[index]}</p>
           </div>
 
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-52'>
-            <p className=''>Vaccine</p>
+            <p>Vaccine</p>
             <p className='mb-4 w-52 block text-slate-900 text-white text-sm font-bold mb-2'>{vaccineHistory[index]}</p>
           </div>
 
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>
-            <p className=''>Next Visit</p>
-            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{visitHistory[index]}</p>
+            <p>Next Visit</p>
+            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{formatDate(visitHistory[index])}</p>
           </div>
         </div>
       ))}
