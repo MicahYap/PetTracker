@@ -19,15 +19,20 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LogIn/>} />
-          <Route path="/signup" element={<SignUp/>} />
-          <Route path='/homepage/:userId' element={<HomeScreen/>}/>
-          <Route path="/create_profile" element={<CreateProfile />} />
-          <Route path="/edit_profile" element={<EditProfile />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
+        
+        {/* User-specific Routes */}
+        <Route path="/homepage/:userId" element={<HomeScreen />} />
+        <Route path="/pets" element={<CreateProfile />} />
+        <Route path="/edit_profile" element={<EditProfile />} />
+        <Route path="/pets/:id" element={<Profile />} />
+        
+        {/* Catch-all route for 404 */}
+        <Route path="*" element={<Error />} />
+      </Routes>
       </BrowserRouter>
     </>
   );

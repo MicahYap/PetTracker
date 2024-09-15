@@ -19,6 +19,10 @@ function LogIn() {
         },
       })
 
+      const userId = response.data.status.data.user.id;
+      navigate(`/homepage/${userId}`);
+
+
     }catch (error) {
       if (error.response) {
         alert("Login error" + JSON.stringify(error))
@@ -30,15 +34,8 @@ function LogIn() {
         alert('Error setting up request:', error.message);
       }
     }
-    localStorage.setItem('token', response.data.status.token);
-
-    const userResponse = await axios.get('http://localhost:3001/current_user', {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}`},
-    });
-
-    const user = userResponse.data;
-    const homepagePath = user.homepage_path || `/homepage/${user.id}`;
-    navigate(homepagePath);
+     localStorage.setItem('token', response.data.status.token);
+      localStorage.setItem('userId', userId);
   } 
 
 
@@ -73,7 +70,7 @@ function LogIn() {
           </div>
 
           <button
-            type="submit"
+            type="button"
             className="text-sm text-pink-500 hover:text-pink-400"
           >
             Forgot password
