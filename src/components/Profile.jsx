@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import GroomerDisplay from './GroomerDisplay';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import VaxCardDisplay from './VaxCard';
 
 function Profile() {
   const [flagGroom, setFlagGroom] = useState(true);
@@ -11,6 +13,7 @@ function Profile() {
   const {id} = useParams();
   const [pet, setPet] = useState(null);
   const token = localStorage.getItem('token');
+  const navigate =useNavigate();
 
   useEffect(() => {
     const fetchPet = async () => {
@@ -43,7 +46,10 @@ function Profile() {
             <p>{pet ? `Gender: ${pet.gender}` : 'Loading...'}</p>
 
           </div>
-          <button className="text-pink-800 underline">← BACK TO DASHBOARD</button>
+          <button 
+            className="text-pink-800 underline"
+            onClick={(userId) => navigate(`/homepage/${userId}`)} >
+          ← BACK TO DASHBOARD</button>
         </div>
 
         {/* //next column */}
@@ -68,6 +74,7 @@ function Profile() {
 
           <div className='bg-pink-400 w-full h-96 p-6 overflow-y-auto'>
             {flagGroom && (<GroomerDisplay />)}
+            {flagVax && (<VaxCardDisplay pet={pet} setFlagVax = {setFlagVax} />)}
           </div>
         </div>
 
