@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 
 function VaxCardDisplay({ pet, setFlagVax }) {
   const [reminder, setReminder] = useState('');
@@ -11,7 +14,6 @@ function VaxCardDisplay({ pet, setFlagVax }) {
   const [cardImg, setCardImg] = useState(null);
   const [viewVaxCard, setViewVaxCard] = useState(null);
   const [uploadedCardImgUrl, setUploadedCardImgUrl] = useState(null);
-  const [reminderHistory, setReminderHistory] = useState([]);
   const [dateHistory, setDateHistory] = useState([]);
   const [vetHistory, setVetHistory] = useState([]);
   const [vaccineHistory, setVaccineHistory] = useState([]);
@@ -20,7 +22,6 @@ function VaxCardDisplay({ pet, setFlagVax }) {
   const [refresh, setRefresh] = useState(false);
 
   const token = localStorage.getItem('token');
-  const { id } = useParams();
 
   const formatDate = (date) => {
     const newDate = new Date(date);
@@ -65,6 +66,8 @@ function VaxCardDisplay({ pet, setFlagVax }) {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      localStorage.setItem('pet_id', pet.id);
+
       alert('Entry saved!');
       setDate('');
       setReminder('');
@@ -84,10 +87,13 @@ function VaxCardDisplay({ pet, setFlagVax }) {
         const response = await axios.get(`http://localhost:3001/pets/${pet.id}/vaxs`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setDateHistory(response.data.map((vax) => vax.calendar));
-        setVetHistory(response.data.map((vax) => vax.vet));
-        setVaccineHistory(response.data.map((vax) => vax.vaccine));
-        setVisitHistory(response.data.map((vax) => vax.next_visit));
+        setDateHistory(response.data.map((vax) => ({ 
+          id: vax.id,
+          date: vax.calendar,
+          vet: vax.vet,
+          vaccine: vax.vaccine,
+          nextVisit: vax.next_visit
+        })));
       } catch (error) {
         alert('Error fetching history: ' + error.message);
       }
@@ -107,7 +113,6 @@ function VaxCardDisplay({ pet, setFlagVax }) {
     const formData = new FormData();
     formData.append('vax_card', cardImg);
     formData.append('pet_id', pet.id);
-
     try {
       const response = await axios.post(`http://localhost:3001/pets/${pet.id}/upload`, formData, {
         headers: {
@@ -136,6 +141,22 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       alert('Error fetching file: ' + error.message);
     }
   }, [pet.id, token]);
+
+  const deleteEntry = async (id) => {
+    const petId = pet.id; // Make sure pet.id is available
+  
+    try {
+      await axios.delete(`http://localhost:3001/pets/${petId}/vaxs/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert('Entry deleted successfully!');
+      setRefresh(prev => !prev); // Refresh the data
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+      alert('Error deleting entry: ' + error.message);
+    }
+  };
+  
 
   return (
     <div>
@@ -237,30 +258,38 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       )}
 
       <p className="text-xl text-white font-semibold text-slate-900 mb-4">History</p>
-      {dateHistory.map((date, index) => (
-        <div key={index} className='flex'>
-          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>
+    
+      {dateHistory.map((entry, index) => (
+        <div key={entry.id} className='flex justify-around'>
+          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Date</p>
-            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{formatDate(date)}</p>
+            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(date)}</p>
           </div>
 
-          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-40'>
+          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Vet</p>
-            <p className='mb-4 w-40 block text-white text-slate-900 text-sm font-bold mb-2'>{vetHistory[index]}</p>
+            <p className='mb-4 block text-white text-slate-900 text-sm font-bold mb-2'>{vetHistory[index]}</p>
           </div>
 
-          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-52'>
+          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Vaccine</p>
-            <p className='mb-4 w-52 block text-slate-900 text-white text-sm font-bold mb-2'>{vaccineHistory[index]}</p>
+            <p className='mb-4 block text-slate-900 text-white text-sm font-bold mb-2'>{vaccineHistory[index]}</p>
           </div>
 
-          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>
+          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Next Visit</p>
-            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{formatDate(visitHistory[index])}</p>
+            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(visitHistory[index])}</p>
           </div>
+
+          <button onClick ={()=> {deleteEntry(entry.id)}}>
+            <FontAwesomeIcon icon={faTrash} className="text-white cursor-pointer" />
+          </button>
+
         </div>
       ))}
+
     </div>
+  
   );
 }
 

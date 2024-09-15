@@ -27,7 +27,7 @@ function App() {
         {/* User-specific Routes */}
         <Route path="/homepage/:userId" element={<HomeScreen />} />
         <Route path="/pets" element={<CreateProfile />} />
-        <Route path="/edit_profile" element={<EditProfile />} />
+        <Route path="/pets/:id/edit_profile" element={<EditProfile />} />
         <Route path="/pets/:id" element={<Profile />} />
         
         {/* Catch-all route for 404 */}
