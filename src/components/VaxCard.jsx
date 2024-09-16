@@ -58,7 +58,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       calendar: date,
       vet: vet,
       vaccine: vaccine,
-      next_visit: selectedDate,
+      next_visit: selectedDate
     };
 
     try {
