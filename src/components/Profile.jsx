@@ -200,7 +200,7 @@ function Profile() {
           </div>
 
           <div className="bg-pink-400 w-full h-full p-6 overflow-y-auto">
-            {flagGroom && <GroomerDisplay />}
+            {flagGroom && <GroomerDisplay  pet={pet} setFlagGroom={setFlagGroom} />}
             {flagVax && <VaxCardDisplay pet={pet} setFlagVax={setFlagVax} />}
           </div>
         </div>

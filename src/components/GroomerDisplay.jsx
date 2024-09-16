@@ -1,122 +1,153 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
-function GroomerDisplay() {
+function GroomerDisplay({ pet, setFlagGroom }) {
   const [reminder, setReminder] = useState('');
   const [date, setDate] = useState('');
   const [groomer, setGroomer] = useState('');
-  const [notes, setNotes] = useState('');
-  const [result, setResult] = useState('');
+  const [nextVisit, setNextVisit] = useState('');
+  const [dateHistory, setDateHistory] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
-  const [dateHistory, setDateHistory] =useState([]);
-  const [groomerHistory, setgroomerHistory] =useState([]);
-  const [notesHistory, setNotesHistory] =useState([]);
-  const [nextVisitHistory, setVisitHistory]= useState([]);
+  const token = localStorage.getItem('token');
+
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', {
+    const newDate = new Date(date);
+    return isNaN(newDate.getTime()) ? 'Invalid date' : newDate.toLocaleDateString('en-US', {
       month: '2-digit',
       day: '2-digit',
       year: '2-digit',
     });
   };
-  
 
-  
-
-  function saveAction(e) {
+  const saveAction = useCallback(async (e) => {
     e.preventDefault();
-  
-    // Validation check
+
     if (!date || !groomer) {
-      alert('Please fill in both Date and Groomer fields.');
+      alert('Please fill in Date and Groomer fields.');
       return;
     }
+
+    let selectedDate = new Date(date);
+    if (isNaN(selectedDate.getTime())) {
+      console.error("Invalid Date:", date);
+      return;
+    }
+
+    const reminderDays = parseInt(reminder, 10);
+    if (isNaN(reminderDays)) {
+      console.error("Invalid reminder value");
+      return;
+    }
+
+    selectedDate.setDate(selectedDate.getDate() + reminderDays);
+
+    const groomerData = {
+      groomer: {
+        calendar: date,
+        groomer: groomer,
+        next_visit: selectedDate
+      }
+    };
+
+    try {
+      if (pet?.id) {
+        await axios.post(`http://localhost:3001/pets/${pet.id}/groomers`, groomerData, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        alert('Entry saved!');
+        setDate('');
+        setReminder('');
+        setGroomer('');
+        setNextVisit('');
+        setFlagGroom(true);
+        setRefresh(prev => !prev);
+      } 
+    } catch (error) {
+      alert("Error saving entry: " + error.message);
+    }
+  }, [date, groomer, nextVisit, reminder, pet, token, setFlagGroom]);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        if (pet?.id) {
+          const response = await axios.get(`http://localhost:3001/pets/${pet.id}/groomers`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setDateHistory(response.data.map((groomer) => ({ 
+            id: groomer.id,
+            date: groomer.calendar,
+            groomer: groomer.groomer,
+            nextVisit: groomer.next_visit,
+          })));
+        }
+      } catch (error) {
+        alert('Error fetching history: ' + error.message);
+      }
+    };
   
-    // Get the latest date from the dateHistory array
-    let lastDate = dateHistory[dateHistory.length - 1] || date;
-  
-    // Convert the last saved date string to a Date object
-    let selectedDate = new Date(lastDate);
-  
-    // Add the reminder days to the selected date
-    selectedDate.setDate(selectedDate.getDate() + parseInt(reminder));
-  
-    // Format the new date
-    const formattedDate = formatDate(selectedDate);
-  
-    // Save the data
-    setDateHistory([...dateHistory, formatDate(date)]);
-    setgroomerHistory([...groomerHistory, groomer]);
-    setNotesHistory([...notesHistory, notes]);
-    setVisitHistory([...nextVisitHistory, formattedDate]);
-  
-    // Clear the input fields
-    setDate('');
-    setGroomer('');
-    setNotes('');
-    setReminder('');
-  }
-  
+    fetchHistory();
+  }, [refresh, pet, token]);
+
+  const deleteEntry = async (id) => {
+    try {
+      if (pet?.id) {
+        await axios.delete(`http://localhost:3001/pets/${pet.id}/groomers/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        alert('Entry deleted successfully!');
+        setRefresh(prev => !prev); // Refresh the data
+      } else {
+        alert('Pet data is missing.');
+      }
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+      alert('Error deleting entry: ' + error.message);
+    }
+  };
   
 
   return (
-    <div className="">
-      <div className='flex gap-x-6 items-end'>
-        {/* DATE */}
+    <div>
+      <form className="flex gap-x-6 items-end" onSubmit={saveAction}>
         <div>
           <p className="block text-white text-slate-900 text-sm font-bold mb-2">Date</p>
-          <form className="mb-4 w-36">
-          <input
-            id="date"
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full p-2 border rounded-lg text-slate-900"
-          />
-          </form>
+          <div className="mb-4 w-36">
+            <input
+              id="date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full p-2 border rounded-lg text-slate-900"
+            />
+          </div>
         </div>
-        
-        {/* GROOMER */}
+
         <div>
           <p className="block text-white text-slate-900 text-sm font-bold mb-2">Groomer</p>
-          <form className="mb-4 w-40">
-          <input
-            id="groomer"
-            type="text"
-            value={groomer}
-            onChange={(e) => setGroomer(e.target.value)}
-            className="w-full p-2 border rounded-lg text-slate-900"
-          />
-          </form>
+          <div className="mb-4 w-40">
+            <input
+              id="groomer"
+              type="text"
+              value={groomer}
+              onChange={(e) => setGroomer(e.target.value)}
+              className="w-full p-2 border rounded-lg text-slate-900"
+            />
+          </div>
         </div>
-        
-        
-        {/* NOTES */}
-        <div>
-          <p className="block text-slate-900 text-white text-sm font-bold mb-2">Notes</p>
-          <form className="mb-4 w-52">
-          <input
-            id="notes"
-            type="text"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            className="w-full p-2 border rounded-lg text-slate-900"
-          />
-          </form>
-        </div>
-       
-          <button
-            className="mb-4 px-4 text-white bg-pink-600 h-10 text-slate-900 content-center rounded-lg hover:bg-pink-700"
-            onClick={saveAction}
-          >
-            Save
+
+        <button className="mb-4 px-4 text-white bg-pink-600 h-10 text-slate-900 content-center rounded-lg hover:bg-pink-700">
+          Save
         </button>
-      </div>
+      </form>
 
-      <div className='flex items-center flex-col'>
-        <div className='flex gap-x-2'>
-
-
-          <form className="flex items-center gap-x-2 mb-4">
+      <div className="flex items-center flex-col">
+        <div className="flex gap-x-2">
+          <div className="flex items-center gap-x-2 mb-4">
             <label className="block text-slate-900 text-sm font-bold mb-2 text-white">Next visit after:</label>
             <div className="flex items-center gap-x-2">
               <input
@@ -128,39 +159,38 @@ function GroomerDisplay() {
               />
               <span className="block text-slate-900 text-sm font-bold mb-2 text-white">days</span>
             </div>
-          </form>
+          </div>
         </div>
       </div>
 
-
-
-
       <p className="text-xl text-white font-semibold text-slate-900 mb-4">History</p>
-      {dateHistory.map((date, index) => (
-        <div key={index} className='flex'>
-          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>
-            <p className=''>Date</p>
-            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{formatDate(date)}</p>
+    
+      {dateHistory.map((entry, index) => (
+        <div key={entry.id} className='flex justify-around'>
+          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
+            <p>Date</p>
+            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(entry.date)}</p>
           </div>
 
-          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-40'>
-            <p className=''>Groomer</p>
-            <p className='mb-4 w-40 block text-white text-slate-900 text-sm font-bold mb-2'>{groomerHistory[index]}</p>
+          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
+            <p>Groomer</p>
+            <p className='mb-4 block text-white text-slate-900 text-sm font-bold mb-2'>{entry.groomer}</p>
           </div>
 
-          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-52'>
-            <p className=''>Notes</p>
-            <p className='mb-4 w-52 block text-slate-900 text-white text-sm font-bold mb-2'>{notesHistory[index]}</p>
+          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
+            <p>Next Visit</p>
+            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(entry.nextVisit)}</p>
           </div>
 
-          <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>
-            <p className=''>Next Visit</p>
-            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4 w-44'>{nextVisitHistory[index]}</p>
-          </div>
+          <button onClick ={()=> {deleteEntry(entry.id)}}>
+            <FontAwesomeIcon icon={faTrash} className="text-white cursor-pointer" />
+          </button>
+
         </div>
       ))}
 
     </div>
+  
   );
 }
 

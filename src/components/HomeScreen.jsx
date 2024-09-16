@@ -54,12 +54,6 @@ function HomeScreen() {
   return (
     <div className="min-h-screen bg-gradient-to-t from-pink-200 to-pink-300">
       <div className="grid grid-cols-3">
-        <button
-          className="col-start-1 justify-self-center self-start py-2 px-5 my-10 text-xl text-slate-100 bg-pink-500 hover:bg-pink-400 rounded-full"
-          onClick={() => navigate('/edit-profile')}
-        >
-          Edit Profile
-        </button>
 
         <div id="siteName" className="col-start-2 text-center text-4xl text-slate-100 py-10">
           Pet Tracker
