@@ -45,11 +45,11 @@ function GroomerDisplay({ pet, setFlagGroom }) {
     selectedDate.setDate(selectedDate.getDate() + reminderDays);
 
     const groomerData = {
-      groomer: {
+     
         calendar: date,
         groomer: groomer,
         next_visit: selectedDate
-      }
+  
     };
 
     try {

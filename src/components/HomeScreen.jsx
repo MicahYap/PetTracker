@@ -52,47 +52,77 @@ function HomeScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-t from-pink-200 to-pink-300">
-      <div className="grid grid-cols-3">
+    <div className="min-h-screen flex flex-col bg-gradient-to-t from-pink-200 to-pink-300">
+      {/* HEADER */}
+      <header className="bg-pink-500 py-4 shadow-md">
+        <div className="container mx-auto flex justify-between items-center px-6">
 
-        <div id="siteName" className="col-start-2 text-center text-4xl text-slate-100 py-10">
-          Pet Tracker
-        </div>
-
-        <section className="col-start-3 justify-self-center self-start ">
-          <button className="py-2 px-5 text-1xl text-slate-100 bg-pink-500 hover:bg-pink-400 rounded-full">
-            <FontAwesomeIcon icon={faBell} />
+          {/* Notification Icon */}
+          <button className="relative text-white focus:outline-none">
+            <FontAwesomeIcon icon={faBell} className="text-2xl" />
           </button>
 
-          {/* LOGOUT BUTTON */}
+          {/* Logo / Site Name */}
+            <div className="text-3xl font-bold text-white">
+            Pet Tracker
+          </div>
+
+
+
+          {/* Logout Button */}
           <button
-            className="py-2 px-5 my-10 text-xl text-slate-100 bg-pink-500 hover:bg-pink-400 rounded-full"
+            className="text-xl text-white bg-pink-800 hover:bg-red-600 px-4 py-2 rounded-lg shadow-md focus:outline-none transition-all"
             onClick={logout}
           >
             Logout
           </button>
-        </section>
+        </div>
+      </header>
+
+      <div className="flex-grow">
+        <div id="picker" className="flex justify-around text-3xl text-slate-100 mt-3">
+          <p
+            className={`px-6 py-2 rounded-t-lg cursor-pointer ${
+              !flag ? 'bg-pink-400 text-slate-900' : 'bg-pink-200 text-slate-900 hover:bg-pink-300'
+            }`}
+            onClick={() => setFlag(false)}
+          >
+            Pets
+          </p>
+          <p
+            className={`px-6 py-2 rounded-t-lg cursor-pointer ${
+              flag ? 'bg-pink-400 text-slate-900' : 'bg-pink-200 text-slate-900 hover:bg-pink-300'
+            }`}
+            onClick={() => setFlag(true)}
+          >
+            Shopping List
+          </p>
+        </div>
+        <HDisplay />
       </div>
 
-      <div id="picker" className="flex justify-around text-3xl text-slate-100 mt-3">
-        <p
-          className={`px-6 py-2 rounded-t-lg cursor-pointer ${
-            !flag ? 'bg-pink-400 text-slate-900' : 'bg-pink-200 text-slate-900 hover:bg-pink-300'
-          }`}
-          onClick={() => setFlag(false)}
-        >
-          Pets
-        </p>
-        <p
-          className={`px-6 py-2 rounded-t-lg cursor-pointer ${
-            flag ? 'bg-pink-400 text-slate-900' : 'bg-pink-200 text-slate-900 hover:bg-pink-300'
-          }`}
-          onClick={() => setFlag(true)}
-        >
-          Shopping List
-        </p>
-      </div>
-      <HDisplay />
+      {/* FOOTER */}
+      <footer className="bg-pink-300 text-slate-900 py-4 mt-10 text-center">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <div className="my-2">
+              <h3 className="font-semibold text-lg">About Us</h3>
+              <p className="text-sm">
+                Keeping track of your pets made easy.
+              </p>
+            </div>
+            <div className="my-2">
+              <h3 className="font-semibold text-lg">Contact Us</h3>
+              <p className="text-sm">Email: support@pettracker.com</p>
+              <p className="text-sm">Phone: +1 123 456 7890</p>
+            </div>
+            <div className="my-2">
+              <h3 className="font-semibold text-lg">&copy; 2024 Pet Tracker</h3>
+              <p className="text-sm">All Rights Reserved</p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

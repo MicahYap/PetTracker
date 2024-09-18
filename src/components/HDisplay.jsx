@@ -40,7 +40,7 @@ function HDisplay() {
               >
                 <img 
                 src = {pet.profile_picture_url}
-                alt = 'Reese'
+                alt = {pet.name}
                 className = 'w-full h-full object-cover rounded-full'
                 />
               </span>

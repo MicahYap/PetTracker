@@ -46,12 +46,10 @@ function VetDisplay({ pet, setFlagVet }) {
     selectedDate.setDate(selectedDate.getDate() + reminderDays);
 
     const vetData = {
-      vet: {
         calendar: date,
         vet: vet,
         concern: concern,
         next_visit: selectedDate.toISOString().split('T')[0] // Correct format for date
-      }
     };
 
     try {
