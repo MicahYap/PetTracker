@@ -82,25 +82,23 @@ function VaxCardDisplay({ pet, setFlagVax }) {
   }, [date, vet, vaccine, reminder, pet.id, token, setFlagVax]);
 
   useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/pets/${pet.id}/vaxs`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setDateHistory(response.data.map((vax) => ({ 
-          id: vax.id,
-          date: vax.calendar,
-          vet: vax.vet,
-          vaccine: vax.vaccine,
-          nextVisit: vax.next_visit
-        })));
-      } catch (error) {
-        alert('Error fetching history: ' + error.message);
-      }
-    };
-  
-    fetchHistory();
-  }, [refresh, pet.id, token]);
+  const fetchHistory = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3001/pets/${pet.id}/vaxs`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setDateHistory(response.data.map((vax) => vax.calendar));
+      setVetHistory(response.data.map((vax) => vax.vet));
+      setVaccineHistory(response.data.map((vax) => vax.vaccine));
+      setVisitHistory(response.data.map((vax) => vax.next_visit));
+    } catch (error) {
+      alert('Error fetching history: ' + error.message);
+    }
+  };
+
+  fetchHistory();
+}, [refresh, pet.id, token]);
 
   const handleImageChange = useCallback((e) => {
     if (e.target.files.length > 0) {
@@ -259,8 +257,8 @@ function VaxCardDisplay({ pet, setFlagVax }) {
 
       <p className="text-xl text-white font-semibold text-slate-900 mb-4">History</p>
     
-      {dateHistory.map((entry, index) => (
-        <div key={entry.id} className='flex justify-around'>
+      {dateHistory.map((date, index) => (
+        <div key={index} className='flex justify-around'>
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Date</p>
             <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(date)}</p>

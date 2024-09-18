@@ -34,16 +34,22 @@ function HDisplay() {
       {pets.map(pet => (
         <div key={pet.id} className="flex items-center justify-center col-span-1 row-span-1">
           {pet.name ? (
-            <span className="text-auto text-pink-500 bg-pink-200 w-16 h-16 flex items-center justify-center rounded-full"
-            onClick={() => navigate(`/pets/${pet.id}`)}
-            >
-              {pet.name}
-            </span>
-
+            <div className= 'flex flex-col items-center'>
+              <span className="text-auto text-pink-500 bg-pink-200 w-24 h-24 flex items-center justify-center rounded-full"
+              onClick={() => navigate(`/pets/${pet.id}`)}
+              >
+                <img 
+                src = {pet.profile_picture_url}
+                alt = 'Reese'
+                className = 'w-full h-full object-cover rounded-full'
+                />
+              </span>
+              <span>{pet.name}</span>
+            </div>
           ) : (
 
             <button 
-              className="text-3xl text-pink-500 hover:text-white hover:bg-pink-400 bg-pink-200 w-16 h-16 rounded-full flex items-center justify-center"
+              className="text-3xl text-pink-500 hover:text-white hover:bg-pink-400 bg-pink-200 w-24 h-24 rounded-full flex items-center justify-center"
               onClick={() => navigate('/pets')} >
               +
             </button>
