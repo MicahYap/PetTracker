@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import VaxCardDisplay from "./VaxCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import VetDisplay from "./VetDisplay";
 
 function Profile() {
   const [flagGroom, setFlagGroom] = useState(true);
@@ -202,6 +203,7 @@ function Profile() {
           <div className="bg-pink-400 w-full h-full p-6 overflow-y-auto">
             {flagGroom && <GroomerDisplay  pet={pet} setFlagGroom={setFlagGroom} />}
             {flagVax && <VaxCardDisplay pet={pet} setFlagVax={setFlagVax} />}
+            {flagVet && <VetDisplay pet={pet} setFlagVet={setFlagVet} />}
           </div>
         </div>
       </div>
