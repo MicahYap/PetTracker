@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import HDisplay from './HDisplay';
 import { useNavigate } from 'react-router-dom';
+import Notification from './Notification';
+
 
 function HomeScreen() {
   const [flag, setFlag] = useState(false);
@@ -58,9 +60,7 @@ function HomeScreen() {
         <div className="container mx-auto flex justify-between items-center px-6">
 
           {/* Notification Icon */}
-          <button className="relative text-white focus:outline-none">
-            <FontAwesomeIcon icon={faBell} className="text-2xl" />
-          </button>
+          <Notification />
 
           {/* Logo / Site Name */}
             <div className="text-3xl font-bold text-white">
