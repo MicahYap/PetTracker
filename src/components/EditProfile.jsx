@@ -48,7 +48,6 @@ function EditProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
   
     const petData = {
       name: petName,
@@ -57,20 +56,20 @@ function EditProfile() {
       birthday: birthday,
       gotcha_day: gotcha,
       gender: gender,
-      user_id: userId
     };
   
     try {
       const response = await axios.patch(`http://localhost:3001/pets/${petId}/edit_profile`, petData, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      
+      console.log('Update response:', response.data); // Log the response data
       alert('Pet profile updated!');
       navigate(`/pets/${petId}`);
     } catch (error) {
       if (error.response) {
-        // Log the entire error response to understand the issue
         console.error('Error response:', error.response);
-        alert('Pet profile creation unsuccessful: ' + JSON.stringify(error.response.data));
+        alert('Pet profile update unsuccessful: ' + JSON.stringify(error.response.data));
       } else if (error.request) {
         alert('No response received: ' + error.request);
       } else {
@@ -78,6 +77,7 @@ function EditProfile() {
       }
     }
   };
+  
   
   return (
     <div className="min-h-screen bg-gradient-to-t from-pink-200 to-pink-300 p-6">
