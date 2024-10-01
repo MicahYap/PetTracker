@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/HomeScreen.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell } from '@fortawesome/free-solid-svg-icons';
 import HDisplay from './HDisplay';
 import { useNavigate } from 'react-router-dom';
 import Notification from './Notification';
+import ShoppingList from './ShoppingList';
 
 
 function HomeScreen() {
@@ -63,7 +62,7 @@ function HomeScreen() {
           <Notification />
 
           {/* Logo / Site Name */}
-            <div className="text-3xl font-bold text-white">
+            <div id="siteName"className="text-3xl font-bold text-white">
             Pet Tracker
           </div>
 
@@ -98,7 +97,10 @@ function HomeScreen() {
             Shopping List
           </p>
         </div>
-        <HDisplay />
+        {
+          flag ? <ShoppingList/> :<HDisplay />
+        }
+        
       </div>
 
       {/* FOOTER */}

@@ -3,7 +3,7 @@
   src: url("src/assets/Jua-Regular.ttf");
 }
 
-#siteName,
-#picker {
+.siteName,
+.picker {
   font-family: "jua";
 }
