@@ -1,8 +1,34 @@
-# React + Vite
+<h1>Welcome to the Pet Tracker App!</h1> 
+<p>This application is built using React (from end) application designed to help users track and manage their pets' grooming, vet visits, and vaccinations.</p>
+<p><strong>Note:</strong> Please run this application along with the Pet Tracker API from my repository to store and retrieve data from the database.</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p>Features:</p>
+<ul>
+  <li>User authentication with Devise</li>
+  <li>Create pet profile and upload profile picture</li>
+  <li>Track grooming, vet visits, and vaccinations</li>
+  <li>Upload vaccination card</li>
+  <li>Shopping List - Coming Soon!</li>
+</ul>
 
-Currently, two official plugins are available:
+<p>This project is built with the following :</p>
+<ul>
+  <li>React JS for front end</li>
+  <li>Ruby on Rails for backend</li>
+  <li>Tailwind CSS for styling</li>
+</ul>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p>Clone the repository:</p>
+<ul> Front end:
+  <li>git clone https://github.com/MicahYap/PetTracker.git</li>
+  <li>go to the folder</li>
+  <li>npm install</li>
+  <li>npm run dev</li>
+</ul>
+
+<ul>Backend:
+  <li>git clone https://github.com/MicahYap/PetTrackerAPI.git</li>
+  <li>go to the folder</li>
+  <li>rails s</li>
+</ul>
+
