@@ -20,7 +20,7 @@ function HDisplay() {
         });
         setPets(response.data);
       } catch (error) {
-        alert('Error fetching pets: ' + JSON.stringify(error));
+        alert('Error fetching pets');
       }
     };
     fetchPets();

@@ -57,8 +57,6 @@ function GroomerDisplay({ pet, setFlagGroom }) {
         await axios.post(`http://localhost:3001/pets/${pet.id}/groomers`, groomerData, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        alert('Entry saved!');
         setDate('');
         setReminder('');
         setGroomer('');
@@ -67,7 +65,7 @@ function GroomerDisplay({ pet, setFlagGroom }) {
         setRefresh(prev => !prev);
       } 
     } catch (error) {
-      alert("Error saving entry: " + error.message);
+      alert("Error saving entry");
     }
   }, [date, groomer, nextVisit, reminder, pet, token, setFlagGroom]);
 
@@ -86,7 +84,7 @@ function GroomerDisplay({ pet, setFlagGroom }) {
           })));
         }
       } catch (error) {
-        alert('Error fetching history: ' + error.message);
+        alert('Error fetching history');
       }
     };
   
@@ -105,8 +103,8 @@ function GroomerDisplay({ pet, setFlagGroom }) {
         alert('Pet data is missing.');
       }
     } catch (error) {
-      console.error('Error deleting entry:', error);
-      alert('Error deleting entry: ' + error.message);
+      console.error('Error deleting entry');
+      alert('Error deleting entry');
     }
   };
   

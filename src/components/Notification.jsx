@@ -24,7 +24,7 @@ function Notification() {
         });
         setPetNames(petNamesMap);
       } catch (error) {
-        alert('Error fetching pets: ' + error.message);
+        alert('Error fetching pets');
       }
     };
     fetchPetNames();
@@ -98,7 +98,7 @@ function Notification() {
  
         setBell(notifications.filter(notif => !notif.read));
       } catch (error) {
-        alert('Error fetching notifications: ' + error.message);
+        alert('Error fetching notifications');
       }
     };
   
@@ -153,7 +153,7 @@ function Notification() {
           localStorage.setItem('notifications', JSON.stringify(newNotifications));
         }
       } catch (error) {
-        alert('Error fetching notifications: ' + error.message);
+        alert('Error fetching notifications');
       }
 
      fetchNotifications();

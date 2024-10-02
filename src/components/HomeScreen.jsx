@@ -34,7 +34,7 @@ function HomeScreen() {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        alert('No token found. Please log in.');
+        alert('Please log in.');
         navigate('/login');
         return;
       }
@@ -43,12 +43,11 @@ function HomeScreen() {
       });
       localStorage.removeItem('token');
       if (response.status === 200) {
-        alert('Logout successful');
         navigate('/login');
       }
     } catch (error) {
       console.error('Logout failed', error);
-      alert('Logout failed. Check console for details.');
+      alert('Logout failed');
     }
   };
 

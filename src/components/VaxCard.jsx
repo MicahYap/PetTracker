@@ -67,8 +67,6 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       });
 
       localStorage.setItem('pet_id', pet.id);
-
-      alert('Entry saved!');
       setDate('');
       setReminder('');
       setVet('');
@@ -77,7 +75,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       setFlagVax(true);
       setRefresh(prev => !prev);
     } catch (error) {
-      alert("Error saving entry: " + error.message);
+      alert("Error saving entry");
     }
   }, [date, vet, vaccine, reminder, pet.id, token, setFlagVax]);
 
@@ -93,7 +91,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       setVaccineHistory(response.data.map((vax) => vax.vaccine));
       setVisitHistory(response.data.map((vax) => vax.next_visit));
     } catch (error) {
-      alert('Error fetching history: ' + error.message);
+      alert('Error fetching history');
     }
   };
 
@@ -121,9 +119,8 @@ function VaxCardDisplay({ pet, setFlagVax }) {
 
       setUploadedCardImgUrl(response.data.vax_card_url);
       setFlag(false);
-      alert('File uploaded successfully!');
     } catch (error) {
-      alert('Error uploading file: ' + error.message);
+      alert('Error uploading file');
     }
   }, [cardImg, pet.id, token]);
 
@@ -136,7 +133,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       setViewVaxCard(response.data.vax_card_url);
       setFlag(true);
     } catch (error) {
-      alert('Error fetching file: ' + error.message);
+      alert('Error fetching file');
     }
   }, [pet.id, token]);
 
@@ -147,11 +144,10 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       await axios.delete(`http://localhost:3001/pets/${petId}/vaxs/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Entry deleted successfully!');
       setRefresh(prev => !prev); // Refresh the data
     } catch (error) {
       console.error('Error deleting entry:', error);
-      alert('Error deleting entry: ' + error.message);
+      alert('Error deleting entry');
     }
   };
   

@@ -42,7 +42,7 @@ function EditProfile() {
           setGotcha(petData.gotcha_day);
           setGender(petData.gender);
         } catch (error) {
-          alert('Error fetching data: ' + JSON.stringify(error));
+          alert('Error fetching data');
         }
       } else {
         console.error('No petId found in localStorage.');
@@ -71,16 +71,15 @@ function EditProfile() {
       });
       
       console.log('Update response:', response.data); // Log the response data
-      alert('Pet profile updated!');
       navigate(`/pets/${petId}`);
     } catch (error) {
       if (error.response) {
-        console.error('Error response:', error.response);
-        alert('Pet profile update unsuccessful: ' + JSON.stringify(error.response.data));
+        console.error('Error');
+        alert('Pet profile update unsuccessful');
       } else if (error.request) {
-        alert('No response received: ' + error.request);
+        alert('No response received');
       } else {
-        alert('Error setting up request: ' + error.message);
+        alert('Error setting up request');
       }
     }
   };

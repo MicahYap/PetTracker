@@ -57,8 +57,6 @@ function VetDisplay({ pet, setFlagVet }) {
         await axios.post(`http://localhost:3001/pets/${pet.id}/vets`, vetData, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        alert('Entry saved!');
         setDate('');
         setReminder('');
         setVet('');
@@ -68,7 +66,7 @@ function VetDisplay({ pet, setFlagVet }) {
         setRefresh(prev => !prev);
       }
     } catch (error) {
-      alert("Error saving entry: " + error.message);
+      alert("Error saving entry");
     }
   }, [date, vet, nextVisit, reminder, pet, token, setFlagVet, concern]);
 
@@ -89,7 +87,7 @@ function VetDisplay({ pet, setFlagVet }) {
           })));
         }
       } catch (error) {
-        alert('Error fetching history: ' + error.message);
+        alert('Error fetching history');
       }
     };
 
@@ -102,14 +100,13 @@ function VetDisplay({ pet, setFlagVet }) {
         await axios.delete(`http://localhost:3001/pets/${pet.id}/vets/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        alert('Entry deleted successfully!');
         setRefresh(prev => !prev); // Refresh the data
       } else {
         alert('Pet data is missing.');
       }
     } catch (error) {
       console.error('Error deleting entry:', error);
-      alert('Error deleting entry: ' + error.message);
+      alert('Error deleting entry');
     }
   };
 

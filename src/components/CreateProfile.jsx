@@ -32,17 +32,16 @@ function CreateProfile() {
       const response = await axios.post('http://localhost:3001/pets', petData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      alert('Pet profile created!');
       navigate('/homepage/:userId');
     } catch (error) {
       if (error.response) {
         // Log the entire error response to understand the issue
-        console.error('Error response:', error.response);
-        alert('Pet profile creation unsuccessful: ' + JSON.stringify(error.response.data));
+        console.error('Error response');
+        alert('Pet profile creation unsuccessful');
       } else if (error.request) {
-        alert('No response received: ' + error.request);
+        alert('No response received');
       } else {
-        alert('Error setting up request: ' + error.message);
+        alert('Error setting up request');
       }
     }
   };

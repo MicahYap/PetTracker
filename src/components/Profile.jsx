@@ -35,7 +35,7 @@ function Profile() {
         // Store petId in localStorage after fetch
         localStorage.setItem('petId', response.data.id);
       } catch (error) {
-        alert("Error fetching pet details: " + JSON.stringify(error));
+        alert("Error fetching pet details");
       }
     };
   
@@ -69,9 +69,8 @@ function Profile() {
         );
 
         setUploadedPicUrl(response.data.profile_picture_url);
-        alert("Profile Picture Uploaded");
       } catch (error) {
-        alert("Upload error" + JSON.stringify(error));
+        alert("Upload error");
       }
     },
     [profilePicture, id, pet, token]
@@ -84,11 +83,10 @@ function Profile() {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
-      alert ('Pet Deleted')
       setRefresh(prev => !prev);
       navigate(`/homepage/${userId}`)
     } catch (error) {
-      alert ('Error deleting pet' + JSON.stringify(error))
+      alert ('Error deleting pet')
     }
   }
 

@@ -25,13 +25,13 @@ function LogIn() {
 
     }catch (error) {
       if (error.response) {
-        alert("Login error" + JSON.stringify(error))
+        alert("Login error")
 
       } else if (error.request){
-          alert('No response received:', error.request);
+          alert('No response received');
       }else {
         // Something happened in setting up the request that triggered an Error
-        alert('Error setting up request:', error.message);
+        alert('Error setting up request');
       }
     }
      localStorage.setItem('token', response.data.status.token);
