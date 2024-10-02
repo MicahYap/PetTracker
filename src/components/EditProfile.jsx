@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../constants/constants';
 
 function EditProfile() {
   const [petName, setPetName] = useState('');
@@ -28,7 +29,7 @@ function EditProfile() {
     const fetchData = async () => {
       if (petId) {
         try {
-          const response = await axios.get(`http://localhost:3001/pets/${petId}`, {
+          const response = await axios.get(`${API_URL}pets/${petId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           const petData = response.data;
@@ -66,7 +67,7 @@ function EditProfile() {
     };
   
     try {
-      const response = await axios.patch(`http://localhost:3001/pets/${petId}/edit_profile`, petData, {
+      const response = await axios.patch(`${API_URL}pets/${petId}/edit_profile`, petData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       

@@ -26,7 +26,7 @@ function Profile() {
   useEffect(() => {
     const fetchPet = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/pets/${id}`, {
+        const response = await axios.get(`${API_URL}pets/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPet(response.data);
@@ -58,7 +58,7 @@ function Profile() {
 
       try {
         const response = await axios.post(
-          `http://localhost:3001/pets/${pet.id}/profile_picture`,
+          `${API_URL}pets/${pet.id}/profile_picture`,
           formData,
           {
             headers: {
@@ -78,7 +78,7 @@ function Profile() {
 
   const deletePet = async() => {
     try {
-      const response = await axios.delete (`http://localhost:3001/pets/${id}`,
+      const response = await axios.delete (`${API_URL}pets/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

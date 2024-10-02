@@ -59,7 +59,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
     };
 
     try {
-      await axios.post(`http://localhost:3001/pets/${pet.id}/vaxs`, vaxData, {
+      await axios.post(`${API_URL}pets/${pet.id}/vaxs`, vaxData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -79,7 +79,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
   useEffect(() => {
   const fetchHistory = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/pets/${pet.id}/vaxs`, {
+      const response = await axios.get(`${API_URL}pets/${pet.id}/vaxs`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -104,7 +104,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
     formData.append('vax_card', cardImg);
     formData.append('pet_id', pet.id);
     try {
-      const response = await axios.post(`http://localhost:3001/pets/${pet.id}/upload`, formData, {
+      const response = await axios.post(`${API_URL}pets/${pet.id}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
 
   const handleViewVaxCard = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/pets/${pet.id}`, {
+      const response = await axios.get(`${API_URL}pets/${pet.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -135,7 +135,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
     const petId = pet.id;
   
     try {
-      await axios.delete(`http://localhost:3001/pets/${petId}/vaxs/${id}`, {
+      await axios.delete(`${API_URL}pets/${petId}/vaxs/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRefresh(prev => !prev);

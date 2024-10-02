@@ -17,7 +17,7 @@ function SignUp() {
         alert('Password must be 6 characters and more');
         return;
       }
-      const response = await axios.post("http://localhost:3001/signup", {
+      const response = await axios.post("${API_URL}signup", {
         user: {
           name: name,
           email: email,

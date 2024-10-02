@@ -14,7 +14,7 @@ function Notification() {
   useEffect(() => {
     const fetchPetNames = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/pets', {
+        const response = await axios.get('${API_URL}pets', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const pets = response.data;
@@ -36,7 +36,7 @@ function Notification() {
       try {
         const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
   
-        const response = await axios.get('http://localhost:3001/pets', {
+        const response = await axios.get('${API_URL}pets', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const pets = response.data;
@@ -44,9 +44,9 @@ function Notification() {
   
         for (const pet of pets) {
           const [groomersResponse, vetsResponse, vaccinesResponse] = await Promise.all([
-            axios.get(`http://localhost:3001/pets/${pet.id}/groomers`, { headers: { Authorization: `Bearer ${token}` } }),
-            axios.get(`http://localhost:3001/pets/${pet.id}/vets`, { headers: { Authorization: `Bearer ${token}` } }),
-            axios.get(`http://localhost:3001/pets/${pet.id}/vaxs`, { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`${API_URL}pets/${pet.id}/groomers`, { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`h${API_URL}pets/${pet.id}/vets`, { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`${API_URL}pets/${pet.id}/vaxs`, { headers: { Authorization: `Bearer ${token}` } }),
           ]);
   
           const groomers = groomersResponse.data;
@@ -136,7 +136,7 @@ function Notification() {
           const unreadNotifications = parsedNotifications.filter((notif) => !notif.read);
           setBell(unreadNotifications);
         } else {
-          const response = await axios.get('http://localhost:3001/pets', {
+          const response = await axios.get('${API_URL}pets', {
             headers: { Authorization: `Bearer ${token}` },
           });
           

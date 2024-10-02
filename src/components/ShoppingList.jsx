@@ -15,7 +15,7 @@ function ShoppingList() {
         return;
       }
       try {
-        const response = await axios.get('http://localhost:3001/pets', {
+        const response = await axios.get('${API_URL}pets', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPets(response.data);

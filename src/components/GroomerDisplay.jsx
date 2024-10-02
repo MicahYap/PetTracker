@@ -54,7 +54,7 @@ function GroomerDisplay({ pet, setFlagGroom }) {
 
     try {
       if (pet?.id) {
-        await axios.post(`http://localhost:3001/pets/${pet.id}/groomers`, groomerData, {
+        await axios.post(`${API_URL}pets/${pet.id}/groomers`, groomerData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setDate('');
@@ -73,7 +73,7 @@ function GroomerDisplay({ pet, setFlagGroom }) {
     const fetchHistory = async () => {
       try {
         if (pet?.id) {
-          const response = await axios.get(`http://localhost:3001/pets/${pet.id}/groomers`, {
+          const response = await axios.get(`${API_URL}pets/${pet.id}/groomers`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setDateHistory(response.data.map((groomer) => ({ 
@@ -94,7 +94,7 @@ function GroomerDisplay({ pet, setFlagGroom }) {
   const deleteEntry = async (id) => {
     try {
       if (pet?.id) {
-        await axios.delete(`http://localhost:3001/pets/${pet.id}/groomers/${id}`, {
+        await axios.delete(`${API_URL}pets/${pet.id}/groomers/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         alert('Entry deleted successfully!');

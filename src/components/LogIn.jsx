@@ -12,7 +12,7 @@ function LogIn() {
     e.preventDefault();
     let response =  ""
     try{
-      response = await axios.post('http://localhost:3001/login',{
+      response = await axios.post('${API_URL}login',{
         user: {
           email: email,
           password: password,

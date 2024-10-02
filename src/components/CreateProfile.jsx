@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../constants/constants';
 
 function CreateProfile() {
   const [petName, setPetName] = useState('');
@@ -29,7 +30,7 @@ function CreateProfile() {
     };
   
     try {
-      const response = await axios.post('http://localhost:3001/pets', petData, {
+      const response = await axios.post(`${API_URL}pets`, petData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate('/homepage/:userId');

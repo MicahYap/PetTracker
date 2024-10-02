@@ -19,7 +19,7 @@ function HomeScreen() {
           navigate('/login');  // Redirect to login if token is not available
           return;
         }
-        const userResponse = await axios.get('http://localhost:3001/current_user', {
+        const userResponse = await axios.get('${API_URL}current_user', {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log(userResponse.data); // You may want to handle the user data
@@ -38,7 +38,7 @@ function HomeScreen() {
         navigate('/login');
         return;
       }
-      const response = await axios.delete('http://localhost:3001/logout', {
+      const response = await axios.delete('${API_URL}logout', {
         headers: { Authorization: `Bearer ${token}` },
       });
       localStorage.removeItem('token');

@@ -54,7 +54,7 @@ function VetDisplay({ pet, setFlagVet }) {
 
     try {
       if (pet?.id) {
-        await axios.post(`http://localhost:3001/pets/${pet.id}/vets`, vetData, {
+        await axios.post(`h${API_URL}pets/${pet.id}/vets`, vetData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setDate('');
@@ -74,7 +74,7 @@ function VetDisplay({ pet, setFlagVet }) {
     const fetchHistory = async () => {
       try {
         if (pet?.id) {
-          const response = await axios.get(`http://localhost:3001/pets/${pet.id}/vets`, {
+          const response = await axios.get(`${API_URL}pets/${pet.id}/vets`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log('Vet history response:', response.data); // Log API response
@@ -97,7 +97,7 @@ function VetDisplay({ pet, setFlagVet }) {
   const deleteEntry = async (id) => {
     try {
       if (pet?.id) {
-        await axios.delete(`http://localhost:3001/pets/${pet.id}/vets/${id}`, {
+        await axios.delete(`${API_URL}pets/${pet.id}/vets/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setRefresh(prev => !prev);
