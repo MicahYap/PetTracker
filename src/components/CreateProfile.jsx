@@ -93,6 +93,7 @@ function CreateProfile() {
               type='date'
               value={birthday}
               onChange={(e) => setBirthday(e.target.value)}
+              max= {new Date().toISOString().split('T')[0]}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
             />
           </div>
@@ -103,6 +104,7 @@ function CreateProfile() {
               type='date'
               value={gotcha}
               onChange={(e) => setGotcha(e.target.value)}
+              max= {new Date().toISOString().split('T')[0]}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
             />
           </div>
