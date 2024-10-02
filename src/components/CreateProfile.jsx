@@ -18,7 +18,6 @@ function CreateProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-  
     const petData = {
       name: petName,
       pet_type: type,

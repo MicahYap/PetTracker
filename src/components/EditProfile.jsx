@@ -16,7 +16,14 @@ function EditProfile() {
   const petId = localStorage.getItem('petId');
 
   useEffect(() => {
-    // Fetch petId from localStorage after it's been set
+
+    const handleDateChange = (e) => {
+      const selectedDate = e.target.value
+      const [year, month, day] = selectedDate.split('-');
+      const formattedDate = `${month}/${day}/${year.slice(-2)}`
+      setBirthday(formattedDate)
+      setGotcha(formattedDate)
+    }
   
     const fetchData = async () => {
       if (petId) {

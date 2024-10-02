@@ -22,6 +22,7 @@ function Profile() {
   const [uploadedPicUrl, setUploadedPicUrl] = useState(null);
   const userId = localStorage.getItem('userId');
 
+
   useEffect(() => {
     const fetchPet = async () => {
       try {
@@ -91,6 +92,12 @@ function Profile() {
     }
   }
 
+  const formattedDate = (e) => {
+    if (!e) return '';
+    const [year, month, day] = e.split('-');
+    return `${month}/${day}/${year.slice(-2)}`;
+  }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-t from-pink-200 to-pink-300">
@@ -123,8 +130,8 @@ function Profile() {
 
           <div className="bg-pink-200 h-32 rounded-lg p-4 text-center">
             <p>{pet ? `Breed: ${pet.breed}` : "Loading..."}</p>
-            <p>{pet ? `Birthday: ${pet.birthday}` : "Loading..."}</p>
-            <p>{pet ? `Gotcha Day: ${pet.gotcha_day}` : "Loading..."}</p>
+            <p>{pet ? `Birthday: ${formattedDate(pet.birthday)}` : "Loading..."}</p>
+            <p>{pet ? `Gotcha Day: ${formattedDate(pet.gotcha_day)}` : "Loading..."}</p>
             <p>{pet ? `Gender: ${pet.gender}` : "Loading..."}</p>
           </div>
 
