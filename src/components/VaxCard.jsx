@@ -15,9 +15,6 @@ function VaxCardDisplay({ pet, setFlagVax }) {
   const [viewVaxCard, setViewVaxCard] = useState(null);
   const [uploadedCardImgUrl, setUploadedCardImgUrl] = useState(null);
   const [dateHistory, setDateHistory] = useState([]);
-  const [vetHistory, setVetHistory] = useState([]);
-  const [vaccineHistory, setVaccineHistory] = useState([]);
-  const [visitHistory, setVisitHistory] = useState([]);
   const [flag, setFlag] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
@@ -86,10 +83,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setDateHistory(response.data.map((vax) => vax.calendar));
-      setVetHistory(response.data.map((vax) => vax.vet));
-      setVaccineHistory(response.data.map((vax) => vax.vaccine));
-      setVisitHistory(response.data.map((vax) => vax.next_visit));
+      setDateHistory(response.data);
     } catch (error) {
       alert('Error fetching history');
     }
@@ -146,7 +140,7 @@ function VaxCardDisplay({ pet, setFlagVax }) {
       });
       setRefresh(prev => !prev);
     } catch (error) {
-      console.error('Error deleting entry:', error);
+      console.error('Error deleting entry:');
       alert('Error deleting entry');
     }
   };
@@ -257,25 +251,25 @@ function VaxCardDisplay({ pet, setFlagVax }) {
         <div key={index} className='flex justify-around'>
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Date</p>
-            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(date)}</p>
+            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(date.calendar)}</p>
           </div>
 
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Vet</p>
-            <p className='mb-4 block text-white text-slate-900 text-sm font-bold mb-2'>{vetHistory[index]}</p>
+            <p className='mb-4 block text-white text-slate-900 text-sm font-bold mb-2'>{date.vet}</p>
           </div>
 
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Vaccine</p>
-            <p className='mb-4 block text-slate-900 text-white text-sm font-bold mb-2'>{vaccineHistory[index]}</p>
+            <p className='mb-4 block text-slate-900 text-white text-sm font-bold mb-2'>{date.vaccine}</p>
           </div>
 
           <div className='flex-col text-white text-slate-900 text-sm font-bold mb-2 mb-4'>
             <p>Next Visit</p>
-            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(visitHistory[index])}</p>
+            <p className='block text-white text-slate-900 text-sm font-bold mb-2 mb-4'>{formatDate(date.next_visit)}</p>
           </div>
 
-          <button onClick ={()=> {deleteEntry(entry.id)}}>
+          <button onClick ={()=> {deleteEntry(date.id)}}>
             <FontAwesomeIcon icon={faTrash} className="text-white cursor-pointer" />
           </button>
 
