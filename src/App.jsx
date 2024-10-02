@@ -20,18 +20,18 @@ function App() {
     <>
       <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
+     
         <Route path="/" element={<LogIn />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         
-        {/* User-specific Routes */}
+        
         <Route path="/homepage/:userId" element={<HomeScreen />} />
         <Route path="/pets" element={<CreateProfile />} />
         <Route path="/pets/:id/edit_profile" element={<EditProfile />} />
         <Route path="/pets/:id" element={<Profile />} />
         
-        {/* Catch-all route for 404 */}
+      
         <Route path="*" element={<Error />} />
       </Routes>
       </BrowserRouter>

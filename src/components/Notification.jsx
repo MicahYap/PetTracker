@@ -7,9 +7,9 @@ function Notification() {
   const [flag, setFlag] = useState(false);
   const [notification, setNotification] = useState([]);
   const [petNames, setPetNames] = useState({});
-  const [bell, setBell] = useState([]); // Stores unread notifications
+  const [bell, setBell] = useState([]);
   const token = localStorage.getItem('token');
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     const fetchPetNames = async () => {
@@ -75,7 +75,7 @@ function Notification() {
               name: petNames[pet.id] || pet.name,
               type: 'Vet',
               date: vet.next_visit,
-              read: existingNotification ? existingNotification.read : false // Preserve existing read status
+              read: existingNotification ? existingNotification.read : false
             });
           });
   
@@ -88,7 +88,7 @@ function Notification() {
               name: petNames[pet.id] || pet.name,
               type: 'Vaccine',
               date: vaccine.next_visit,
-              read: existingNotification ? existingNotification.read : false // Preserve existing read status
+              read: existingNotification ? existingNotification.read : false 
             });
           });
         }

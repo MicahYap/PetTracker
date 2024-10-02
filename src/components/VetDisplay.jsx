@@ -49,7 +49,7 @@ function VetDisplay({ pet, setFlagVet }) {
         calendar: date,
         vet: vet,
         concern: concern,
-        next_visit: selectedDate.toISOString().split('T')[0] // Correct format for date
+        next_visit: selectedDate.toISOString().split('T')[0]
     };
 
     try {
@@ -100,7 +100,7 @@ function VetDisplay({ pet, setFlagVet }) {
         await axios.delete(`http://localhost:3001/pets/${pet.id}/vets/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setRefresh(prev => !prev); // Refresh the data
+        setRefresh(prev => !prev);
       } else {
         alert('Pet data is missing.');
       }

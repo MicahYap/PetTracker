@@ -138,13 +138,13 @@ function VaxCardDisplay({ pet, setFlagVax }) {
   }, [pet.id, token]);
 
   const deleteEntry = async (id) => {
-    const petId = pet.id; // Make sure pet.id is available
+    const petId = pet.id;
   
     try {
       await axios.delete(`http://localhost:3001/pets/${petId}/vaxs/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setRefresh(prev => !prev); // Refresh the data
+      setRefresh(prev => !prev);
     } catch (error) {
       console.error('Error deleting entry:', error);
       alert('Error deleting entry');

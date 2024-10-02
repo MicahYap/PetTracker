@@ -30,7 +30,7 @@ function LogIn() {
       } else if (error.request){
           alert('No response received');
       }else {
-        // Something happened in setting up the request that triggered an Error
+     
         alert('Error setting up request');
       }
     }

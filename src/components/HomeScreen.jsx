@@ -53,21 +53,21 @@ function HomeScreen() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-t from-pink-200 to-pink-300">
-      {/* HEADER */}
+      
       <header className="bg-pink-500 py-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center px-6">
 
-          {/* Notification Icon */}
+         
           <Notification />
 
-          {/* Logo / Site Name */}
+         
             <div id="siteName"className="text-3xl font-bold text-white">
             Pet Tracker
           </div>
 
 
 
-          {/* Logout Button */}
+         
           <button
             className="text-xl text-white bg-pink-800 hover:bg-red-600 px-4 py-2 rounded-lg shadow-md focus:outline-none transition-all"
             onClick={logout}
@@ -102,7 +102,7 @@ function HomeScreen() {
         
       </div>
 
-      {/* FOOTER */}
+   
       <footer className="bg-pink-300 text-slate-900 py-4 mt-10 text-center">
         <div className="container mx-auto px-4">
           <div className="flex flex-col sm:flex-row justify-between items-center">

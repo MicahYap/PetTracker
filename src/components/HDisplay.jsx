@@ -30,7 +30,7 @@ function HDisplay() {
 
   return (
     <div className="border-2 border-pink-500 h-96 mx-20 mb-20 p-6 rounded-lg grid grid-cols-3 grid-rows-2 gap-10">
-      {/* The + button occupies the 1st column, 1st row */}
+ 
       {pets.map(pet => (
         <div key={pet.id} className="flex items-center justify-center col-span-1 row-span-1">
           {pet.name ? (

@@ -29,10 +29,10 @@ function Profile() {
         const response = await axios.get(`http://localhost:3001/pets/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setPet(response.data); // Set the pet data
+        setPet(response.data);
         setUploadedPicUrl(response.data.profile_picture_url);
         
-        // Store petId in localStorage after fetch
+      
         localStorage.setItem('petId', response.data.id);
       } catch (error) {
         alert("Error fetching pet details");

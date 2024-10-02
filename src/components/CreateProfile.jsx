@@ -35,7 +35,7 @@ function CreateProfile() {
       navigate('/homepage/:userId');
     } catch (error) {
       if (error.response) {
-        // Log the entire error response to understand the issue
+     
         console.error('Error response');
         alert('Pet profile creation unsuccessful');
       } else if (error.request) {

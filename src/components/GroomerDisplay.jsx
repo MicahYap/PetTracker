@@ -98,7 +98,7 @@ function GroomerDisplay({ pet, setFlagGroom }) {
           headers: { Authorization: `Bearer ${token}` },
         });
         alert('Entry deleted successfully!');
-        setRefresh(prev => !prev); // Refresh the data
+        setRefresh(prev => !prev);
       } else {
         alert('Pet data is missing.');
       }
