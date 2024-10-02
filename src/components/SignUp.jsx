@@ -12,6 +12,11 @@ function SignUp() {
     e.preventDefault();
 
     try {
+
+      if (password.length < 6) {
+        alert('Password must be 6 characters and more');
+        return;
+      }
       const response = await axios.post("http://localhost:3001/signup", {
         user: {
           name: name,
@@ -20,7 +25,7 @@ function SignUp() {
         },
       });
 
-      console.log("Signup successful", response.data);
+      
       localStorage.setItem("token", response.data.jwt);
     } catch (error) {
       if (error.response) {
@@ -97,17 +102,6 @@ function SignUp() {
             />
           </div>
 
-          {/* <div>
-            <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">Confirm Password:</label>
-            <input
-              id="confirm-password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Confirm Password"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
-            />
-          </div> */}
           <div className="flex justify-between">
             <button
               type="submit"
