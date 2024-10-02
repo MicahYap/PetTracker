@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from '../constants/constants';
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -17,7 +18,7 @@ function SignUp() {
         alert('Password must be 6 characters and more');
         return;
       }
-      const response = await axios.post("${API_URL}signup", {
+      const response = await axios.post(`${API_URL}signup`, {
         user: {
           name: name,
           email: email,

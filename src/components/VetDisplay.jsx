@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { API_URL } from '../constants/constants';
 
 function VetDisplay({ pet, setFlagVet }) {
   const [reminder, setReminder] = useState('');
@@ -54,7 +55,7 @@ function VetDisplay({ pet, setFlagVet }) {
 
     try {
       if (pet?.id) {
-        await axios.post(`h${API_URL}pets/${pet.id}/vets`, vetData, {
+        await axios.post(`${API_URL}pets/${pet.id}/vets`, vetData, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setDate('');

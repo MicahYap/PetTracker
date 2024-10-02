@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
+import { API_URL } from '../constants/constants';
 
 function Notification() {
   const [flag, setFlag] = useState(false);
@@ -14,7 +15,7 @@ function Notification() {
   useEffect(() => {
     const fetchPetNames = async () => {
       try {
-        const response = await axios.get('${API_URL}pets', {
+        const response = await axios.get(`${API_URL}pets`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const pets = response.data;
@@ -36,7 +37,7 @@ function Notification() {
       try {
         const storedNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
   
-        const response = await axios.get('${API_URL}pets', {
+        const response = await axios.get(`${API_URL}pets`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const pets = response.data;
@@ -136,7 +137,7 @@ function Notification() {
           const unreadNotifications = parsedNotifications.filter((notif) => !notif.read);
           setBell(unreadNotifications);
         } else {
-          const response = await axios.get('${API_URL}pets', {
+          const response = await axios.get(`${API_URL}pets`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           

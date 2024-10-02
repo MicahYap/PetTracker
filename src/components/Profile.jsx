@@ -7,6 +7,7 @@ import VaxCardDisplay from "./VaxCard";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import VetDisplay from "./VetDisplay";
+import { API_URL } from '../constants/constants';
 
 function Profile() {
   const [flagGroom, setFlagGroom] = useState(true);

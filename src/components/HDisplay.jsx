@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../constants/constants';
 
 function HDisplay() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function HDisplay() {
         return;
       }
       try {
-        const response = await axios.get('${API_URL}pets', {
+        const response = await axios.get(`${API_URL}pets`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setPets(response.data);

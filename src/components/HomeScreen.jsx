@@ -5,6 +5,7 @@ import HDisplay from './HDisplay';
 import { useNavigate } from 'react-router-dom';
 import Notification from './Notification';
 import ShoppingList from './ShoppingList';
+import { API_URL } from '../constants/constants';
 
 
 function HomeScreen() {
@@ -19,7 +20,7 @@ function HomeScreen() {
           navigate('/login');  // Redirect to login if token is not available
           return;
         }
-        const userResponse = await axios.get('${API_URL}current_user', {
+        const userResponse = await axios.get(`${API_URL}current_user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log(userResponse.data); // You may want to handle the user data
@@ -38,7 +39,7 @@ function HomeScreen() {
         navigate('/login');
         return;
       }
-      const response = await axios.delete('${API_URL}logout', {
+      const response = await axios.delete(`${API_URL}logout`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       localStorage.removeItem('token');

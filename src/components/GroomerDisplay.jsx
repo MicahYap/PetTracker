@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { API_URL } from '../constants/constants';
 
 function GroomerDisplay({ pet, setFlagGroom }) {
   const [reminder, setReminder] = useState('');
